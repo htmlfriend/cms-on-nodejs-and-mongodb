@@ -1,8 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-router.get("/posts", (req, res) => {
-  res.render("posts");
+router.all("*", (req, res, next) => {
+  req.app.locals.layout = "admin";
+  next();
+});
+
+router.get("/", (req, res) => {
+  res.send("It work");
+});
+
+router.get("/dashboard", (req, res) => {
+  res.render("admin/dashboard");
 });
 
 module.exports = router;
