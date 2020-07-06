@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
+const path = require("path");
 const Post = require("../../models/Post");
+const { isEmpty, uploadDir } = require("../../helpers/ulpoad-helper");
 
 router.all("*", (req, res, next) => {
   req.app.locals.layout = "admin";
@@ -18,6 +21,17 @@ router.get("/create", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
+  let fileName = "http://uploads/uploadscar.jpg";
+  if (!isEmpty(req.files)) {
+    let file = req.files.file;
+    fileName = Date.now() + "-" + file.name;
+    let dirUploads = "./public/uploads/";
+
+    file.mv(dirUploads + fileName, (err) => {
+      if (err) throw err;
+    });
+  }
+
   let allowCommentsProp = true;
   if (req.body.allowComments) {
     allowCommentsProp = true;
@@ -29,6 +43,7 @@ router.post("/create", (req, res) => {
     status: req.body.status,
     allowComments: allowCommentsProp,
     body: req.body.body,
+    file: fileName,
   });
   newPost
     .save()
@@ -65,5 +80,22 @@ router.get("/edit/:id", (req, res) => {
       });
     });
   });
+});
+
+router.delete("/:id", (req, res) => {
+  Post.findOne({ _id: req.params.id }).then((post) => {
+    fs.unlink(uploadDir + post.file, (err) => {
+      post.remove();
+
+      res.redirect("/admin/posts");
+      if (err) {
+        console.log(err);
+      }
+    });
+  });
+});
+
+router.get("/my-posts", (req, res) => {
+  res.send(`<h1>This page is under constuction</h1>`);
 });
 module.exports = router;

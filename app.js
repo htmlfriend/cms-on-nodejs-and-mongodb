@@ -10,8 +10,9 @@ const {
 const mongoose = require("mongoose");
 // for put requests
 const methodOverride = require("method-override");
-
-//routers
+// for images - control size and so on
+const upload = require("express-fileupload");
+// routers
 const homeRoutes = require("./routes/home");
 const adminRoutes = require("./routes/admin");
 const postsRoutes = require("./routes/admin/posts");
@@ -31,9 +32,13 @@ mongoose
   });
 
 app.use(express.static(path.join(__dirname, "public")));
-// helper function
 
+// helper function
 const { select } = require("./helpers/handlebars-helpers");
+
+// upload Middlware
+app.use(upload());
+
 app.engine(
   "hbs",
   exphbrs({

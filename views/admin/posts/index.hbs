@@ -6,6 +6,9 @@
 			<th>Title</th>
 			<th>Status</th>
 			<th>Allow Comments</th>
+			<th>Image</th>
+			<th>Edit Post</th>
+			<th>Delete Post</th>
 		</tr>
 	<tbody>
 		{{#each posts}}
@@ -14,7 +17,13 @@
 			<td>{{title}}</td>
 			<td>{{status}}</td>
 			<td>{{allowComments}}</td>
+			<td><img class="img-thumbnail" src="/uploads/{{file}}" alt="image"></td>
 			<td><a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a></td>
+			<td>
+				<form action="/admin/posts/{{id}}?_method=DELETE" method="post">
+					<button type="submit" class="btn btn-danger">Delete</button>
+				</form>
+			</td>
 		</tr>
 		{{/each}}
 	</tbody>
