@@ -12,6 +12,10 @@ const mongoose = require("mongoose");
 const methodOverride = require("method-override");
 // for images - control size and so on
 const upload = require("express-fileupload");
+// session
+const session = require("express-session");
+// alert of mistackes
+const flash = require("connect-flash");
 // routers
 const homeRoutes = require("./routes/home");
 const adminRoutes = require("./routes/admin");
@@ -57,7 +61,22 @@ app.use(bodyParser.json());
 
 //method Override for edit post
 app.use(methodOverride("_method"));
+//middleware of session
+app.use(
+  session({
+    secret: "webserver",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
 
+//middlewqre of flash
+app.use(flash());
+//local variables using middleware
+app.use((req, res, next) => {
+  res.locals.success_message = req.flash("success_message");
+  next();
+});
 app.use("/", homeRoutes);
 app.use("/admin", adminRoutes);
 app.use("/admin/posts", postsRoutes);

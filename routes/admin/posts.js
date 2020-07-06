@@ -21,38 +21,61 @@ router.get("/create", (req, res) => {
 });
 
 router.post("/create", (req, res) => {
-  let fileName = "http://uploads/uploadscar.jpg";
-  if (!isEmpty(req.files)) {
-    let file = req.files.file;
-    fileName = Date.now() + "-" + file.name;
-    let dirUploads = "./public/uploads/";
-
-    file.mv(dirUploads + fileName, (err) => {
-      if (err) throw err;
+  let errors = [];
+  if (!req.body.title) {
+    errors.push({
+      message: "Please add a title",
     });
   }
 
-  let allowCommentsProp = true;
-  if (req.body.allowComments) {
-    allowCommentsProp = true;
+  if (!req.body.body) {
+    errors.push({
+      message: "Please add a description",
+    });
+  }
+  if (errors.length > 0) {
+    res.render("admin/posts/create", {
+      errors: errors,
+    });
   } else {
-    allowCommentsProp = false;
-  }
-  const newPost = new Post({
-    title: req.body.title,
-    status: req.body.status,
-    allowComments: allowCommentsProp,
-    body: req.body.body,
-    file: fileName,
-  });
-  newPost
-    .save()
-    .then((savedPost) => {
-      res.redirect("/admin/posts");
-    })
-    .catch((err) => {
-      console.log(err);
+    // render without errors
+    let fileName = "";
+    if (!isEmpty(req.files)) {
+      let file = req.files.file;
+      fileName = Date.now() + "-" + file.name;
+      let dirUploads = "./public/uploads/";
+
+      file.mv(dirUploads + fileName, (err) => {
+        if (err) throw err;
+      });
+    }
+
+    let allowCommentsProp = true;
+    if (req.body.allowComments) {
+      allowCommentsProp = true;
+    } else {
+      allowCommentsProp = false;
+    }
+    const newPost = new Post({
+      title: req.body.title,
+      status: req.body.status,
+      allowComments: allowCommentsProp,
+      body: req.body.body,
+      file: fileName,
     });
+    newPost
+      .save()
+      .then((savedPost) => {
+        req.flash(
+          "success_message",
+          `Post ${savedPost.title} was created successfully`
+        );
+        res.redirect("/admin/posts");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 });
 
 router.get("/edit/:id", (req, res) => {
@@ -75,7 +98,22 @@ router.get("/edit/:id", (req, res) => {
       post.status = req.body.status;
       post.body = req.body.body;
 
+      if (!isEmpty(req.files)) {
+        let file = req.files.file;
+        fileName = Date.now() + "-" + file.name;
+        post.file = fileName;
+        let dirUploads = "./public/uploads/";
+
+        file.mv(dirUploads + fileName, (err) => {
+          if (err) throw err;
+        });
+      }
+
       post.save().then((editPost) => {
+        req.flash(
+          "success_message",
+          `Post ${editPost.title} was successfully updated`
+        );
         res.redirect("/admin/posts");
       });
     });
@@ -84,13 +122,20 @@ router.get("/edit/:id", (req, res) => {
 
 router.delete("/:id", (req, res) => {
   Post.findOne({ _id: req.params.id }).then((post) => {
-    fs.unlink(uploadDir + post.file, (err) => {
-      post.remove();
+    if (post.file) {
+      fs.unlink(uploadDir + post.file, (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    }
+    post.remove().then((delededPost) => {
+      req.flash(
+        "success_message",
+        `Post ${delededPost.title} was successfully deleded`
+      );
 
       res.redirect("/admin/posts");
-      if (err) {
-        console.log(err);
-      }
     });
   });
 });
