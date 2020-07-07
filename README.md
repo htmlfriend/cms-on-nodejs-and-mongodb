@@ -7,6 +7,6 @@
 
 ![GitHub Logo](/public/uploads/1594155204102-2020-07-07_16-48-08.png)
 
-![GitHub Logo](/public/uploads/1594155237963-2020-07-07_16-47-51.png)
+![GitHub Logo](/public/uploads/2020-07-07_17-08-06.png)
 
 
