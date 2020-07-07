@@ -3,6 +3,8 @@ const router = express.Router();
 const fs = require("fs");
 const path = require("path");
 const Post = require("../../models/Post");
+const Category = require("../../models/Category");
+
 const { isEmpty, uploadDir } = require("../../helpers/ulpoad-helper");
 
 router.all("*", (req, res, next) => {
@@ -11,13 +13,19 @@ router.all("*", (req, res, next) => {
 });
 
 router.get("/", (req, res) => {
-  Post.find({}, function (err, posts) {
-    res.render("admin/posts", { posts: posts });
-  });
+  Post.find({})
+    .populate({ path: "category" })
+    .then((posts) => {
+      res.render("admin/posts", { posts: posts });
+    });
 });
 
 router.get("/create", (req, res) => {
-  res.render("admin/posts/create");
+  Category.find({}).then((categories) => {
+    res.render("admin/posts/create", {
+      categories: categories,
+    });
+  });
 });
 
 router.post("/create", (req, res) => {
@@ -62,6 +70,7 @@ router.post("/create", (req, res) => {
       allowComments: allowCommentsProp,
       body: req.body.body,
       file: fileName,
+      category: req.body.category,
     });
     newPost
       .save()
@@ -81,41 +90,44 @@ router.post("/create", (req, res) => {
 router.get("/edit/:id", (req, res) => {
   let postId = req.params.id;
   Post.findOne({ _id: postId }).then((post) => {
-    res.render("admin/posts/edit", { post: post });
+    Category.find({}).then((categories) => {
+      res.render("admin/posts/edit", { post: post, categories: categories });
+    });
   });
+});
 
-  router.put("/edit/:id", (req, res) => {
-    let postId = req.params.id;
-    Post.findOne({ _id: postId }).then((post) => {
-      let allowCommentsProp = true;
-      if (req.body.allowComments) {
-        allowCommentsProp = true;
-      } else {
-        allowCommentsProp = false;
-      }
-      post.title = req.body.title;
-      post.allowComments = allowCommentsProp;
-      post.status = req.body.status;
-      post.body = req.body.body;
+router.put("/edit/:id", (req, res) => {
+  let postId = req.params.id;
+  Post.findOne({ _id: postId }).then((post) => {
+    let allowCommentsProp = true;
+    if (req.body.allowComments) {
+      allowCommentsProp = true;
+    } else {
+      allowCommentsProp = false;
+    }
+    post.title = req.body.title;
+    post.allowComments = allowCommentsProp;
+    post.status = req.body.status;
+    post.body = req.body.body;
+    post.category = req.body.category;
 
-      if (!isEmpty(req.files)) {
-        let file = req.files.file;
-        fileName = Date.now() + "-" + file.name;
-        post.file = fileName;
-        let dirUploads = "./public/uploads/";
+    if (!isEmpty(req.files)) {
+      let file = req.files.file;
+      fileName = Date.now() + "-" + file.name;
+      post.file = fileName;
+      let dirUploads = "./public/uploads/";
 
-        file.mv(dirUploads + fileName, (err) => {
-          if (err) throw err;
-        });
-      }
-
-      post.save().then((editPost) => {
-        req.flash(
-          "success_message",
-          `Post ${editPost.title} was successfully updated`
-        );
-        res.redirect("/admin/posts");
+      file.mv(dirUploads + fileName, (err) => {
+        if (err) throw err;
       });
+    }
+
+    post.save().then((editPost) => {
+      req.flash(
+        "success_message",
+        `Post ${editPost.title} was successfully updated`
+      );
+      res.redirect("/admin/posts");
     });
   });
 });

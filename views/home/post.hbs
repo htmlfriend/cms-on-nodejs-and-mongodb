@@ -1,125 +1,127 @@
 <div class="row">
 
-    <!-- Post Content Column -->
-    <div class="col-lg-8">
+	<!-- Post Content Column -->
+	<div class="col-lg-8">
 
-        <!-- Title -->
-        <h1 class="mt-4">{{post.title}}</h1>
+		<!-- Title -->
+		<h1 class="mt-4">{{post.title}}</h1>
 
-        <!-- Author -->
-        <p class="lead">
-            by
-            <a href="#">{{post.user.firstName}}</a>
-        </p>
+		<!-- Author -->
+		<p class="lead">
+			by
+			<a href="#">{{post.user.firstName}}</a>
+		</p>
 
-        <hr>
+		<hr>
 
-        <!-- Date/Time -->
-        <p>Posted on {{generateDate date "MMMM Do YYYY"}}</p>
+		<!-- Date/Time -->
+		<p>Posted on {{generateTime date "MMMM Do YYYY"}}</p>
 
-        <hr>
+		<hr>
 
-        <!-- Preview Image -->
-        <img class="img-fluid rounded" src="/uploads/{{post.file}}" alt="">
+		<!-- Preview Image -->
+		{{#if post.file}}
+		<img src="/uploads/{{post.file}}" alt="image" class="img-fluid rounded">
+		{{else}}
+		<img src="http://placehold.it/750x300" alt="image" class="img-fluid rounded">
+		{{/if}}
+		<hr>
 
-        <hr>
+		<!-- Post Content -->
 
-        <!-- Post Content -->
+		<p>{{post.body}}</p>
 
-        <p>{{post.body}}</p>
+		<hr>
 
-        <hr>
+		{{!-- 
+		{{#if user}}
 
+		{{#if post.allowComments}} --}}
 
-    {{#if user}}
+		<!-- Comments Form -->
+		<div class="card my-4">
+			<h5 class="card-header">Leave a Comment:</h5>
+			<div class="card-body">
+				<form action="/admin/comments" method="post">
+					<div class="form-group">
+						<textarea name="body" class="form-control" rows="3"></textarea>
 
-     {{#if post.allowComments}}
+						<input type="hidden" value="{{post.id}}" name="id">
+					</div>
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</form>
+			</div>
+		</div>
 
-        <!-- Comments Form -->
-        <div class="card my-4">
-            <h5 class="card-header">Leave a Comment:</h5>
-            <div class="card-body">
-                <form action="/admin/comments" method="post">
-                    <div class="form-group">
-                        <textarea name="body" class="form-control" rows="3"></textarea>
+		{{!-- {{else}} --}}
 
-                        <input type="hidden" value="{{post.id}}" name="id">
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </form>
-            </div>
-        </div>
+		<h2>Comments not allowed for this</h2>
 
-        {{else}}
-
-        <h2>Comments not allowed for this</h2>
-
-            <br>
-            <hr>
-
-
-        {{/if}}
-
-
-    {{else}}
-
-        You need to login to comment <a href="/login">Login</a>
-
-        <br>
-        <hr>
-
-    {{/if}}
+		<br>
+		<hr>
 
 
+		{{!-- {{/if}}
 
-         {{#each post.comments}}
 
-        <!-- Single Comment -->
-        <div class="media mb-4">
-            <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-            <div class="media-body">
-                <h5 class="mt-0">{{user.firstName}}</h5>
+		{{else}} --}}
 
-                {{body}}
+		You need to login to comment <a href="/login">Login</a>
 
-            </div>
-        </div>
-
-        {{/each}}
+		<br>
+		<hr>
+		{{!-- 
+		{{/if}}
 
 
 
+		{{#each post.comments}} --}}
 
-        <!-- Comment with nested comments -->
-        <!--<div class="media mb-4">-->
-            <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
-            <!--<div class="media-body">-->
-                <!--<h5 class="mt-0">Commenter Nameaaa</h5>-->
-                <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+		<!-- Single Comment -->
+		{{!-- <div class="media mb-4">
+			<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+			<div class="media-body">
+				<h5 class="mt-0">{{user.firstName}}</h5>
 
-                <!--<div class="media mt-4">-->
-                    <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
-                    <!--<div class="media-body">-->
-                        <!--<h5 class="mt-0">Commenter Name</h5>-->
-                        <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
-                    <!--</div>-->
-                <!--</div>-->
+				{{body}}
 
-                <!--<div class="media mt-4">-->
-                    <!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
-                    <!--<div class="media-body">-->
-                        <!--<h5 class="mt-0">Commenter Name</h5>-->
-                        <!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
-                    <!--</div>-->
-                <!--</div>-->
+			</div>
+		</div> --}}
 
-            <!--</div>-->
-        <!--</div>-->
+		{{!-- {{/each}} --}}
 
 
-    </div>
 
-    {{> home/sidebar}}
 
+		<!-- Comment with nested comments -->
+		<!--<div class="media mb-4">-->
+		<!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
+		<!--<div class="media-body">-->
+		<!--<h5 class="mt-0">Commenter Nameaaa</h5>-->
+		<!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+
+		<!--<div class="media mt-4">-->
+		<!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
+		<!--<div class="media-body">-->
+		<!--<h5 class="mt-0">Commenter Name</h5>-->
+		<!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+		<!--</div>-->
+		<!--</div>-->
+
+		<!--<div class="media mt-4">-->
+		<!--<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">-->
+		<!--<div class="media-body">-->
+		<!--<h5 class="mt-0">Commenter Name</h5>-->
+		<!--Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.-->
+		<!--</div>-->
+		<!--</div>-->
+
+		<!--</div>-->
+		<!--</div>-->
+
+
+	</div>
+
+	{{> sidebar}}
 </div>
 <!-- /.row -->

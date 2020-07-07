@@ -20,7 +20,7 @@ const flash = require("connect-flash");
 const homeRoutes = require("./routes/home");
 const adminRoutes = require("./routes/admin");
 const postsRoutes = require("./routes/admin/posts");
-
+const categoriesRoutes = require("./routes/admin/categories");
 // mongoose.Promise = global.Promise;
 
 mongoose
@@ -80,6 +80,7 @@ app.use((req, res, next) => {
 app.use("/", homeRoutes);
 app.use("/admin", adminRoutes);
 app.use("/admin/posts", postsRoutes);
+app.use("/admin/categories", categoriesRoutes);
 
 app.listen(3000, () => {
   console.log("I am running on 3000 .....");

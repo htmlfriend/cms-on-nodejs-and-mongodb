@@ -1,1 +1,31 @@
-<h1>Welcome to the site</h1>
+<div class="row">
+	<div class="col-md-8">
+		<h1 class="my-4">Home</h1>
+
+		{{#each posts}}
+
+		<div class="card mb-4">
+			{{#if file}}
+			<img src="/uploads/{{file}}" alt="image" class="card-img-top">
+			{{else}}
+			<img src="http://placehold.it/750x300" alt="image" class="card-img-top">
+			{{/if}}
+			<div class="card-body">
+				<h2 class="card-title">{{title}}</h2>
+				<p class="card-text">{{body}}</p>
+				<a href="/post/{{id}}" class="btn btn-primary">Read more &rarr;</a>
+			</div>
+			<div class="card-footer tex-muted">
+				Posted on {{generateTime date 'L'}} by Yurii
+				<a href="#">Start reading</a>
+			</div>
+		</div>
+		{{/each}}
+
+	</div>
+	{{> sidebar}}
+</div>
+<ul class="pagination justify-content-center mb-4">
+	<li class="page-item"><a href="#" class="page-link">Older</a></li>
+	<li class="page-item"><a href="#" class="page-link">Newer</a></li>
+</ul>
