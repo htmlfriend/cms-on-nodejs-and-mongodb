@@ -41,7 +41,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // helper function
 const { select, generateTime } = require("./helpers/handlebars-helpers");
-const { allowedNodeEnvironmentFlags } = require("process");
 
 // upload Middlware
 app.use(upload());
@@ -61,8 +60,6 @@ app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(passport.initialize());
-app.use(passport.session());
 
 //method Override for edit post
 app.use(methodOverride("_method"));
@@ -74,14 +71,18 @@ app.use(
     saveUninitialized: true,
   })
 );
-
+// init passport authentication. it's going after session
+app.use(passport.initialize());
+app.use(passport.session());
 //middlewqre of flash
 app.use(flash());
 //local variables using middleware
 app.use((req, res, next) => {
+  res.locals.user = req.user || null;
   res.locals.success_message = req.flash("success_message");
   res.locals.error_message = req.flash("error_message");
   res.locals.form_error = req.flash("form_errors");
+  res.locals.error = req.flash("error");
   next();
 });
 app.use("/", homeRoutes);

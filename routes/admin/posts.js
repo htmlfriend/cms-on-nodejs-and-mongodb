@@ -4,9 +4,11 @@ const fs = require("fs");
 const path = require("path");
 const Post = require("../../models/Post");
 const Category = require("../../models/Category");
+const { userAuthenticated } = require("../../helpers/authentication");
 
 const { isEmpty, uploadDir } = require("../../helpers/ulpoad-helper");
 
+//use middleware useAuthenticated
 router.all("*", (req, res, next) => {
   req.app.locals.layout = "admin";
   next();

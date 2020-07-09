@@ -3,6 +3,8 @@ const router = express.Router();
 const faker = require("faker");
 const Post = require("../../models/Post");
 
+const { userAuthenticated } = require("../../helpers/authentication");
+//for defeding router use middleware userAuthenticated
 router.all("*", (req, res, next) => {
   req.app.locals.layout = "admin";
   next();
