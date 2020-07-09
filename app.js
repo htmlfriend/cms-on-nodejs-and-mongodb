@@ -16,15 +16,17 @@ const upload = require("express-fileupload");
 const session = require("express-session");
 // alert of mistackes
 const flash = require("connect-flash");
+// passport initialize
+const passport = require("passport");
 // routers
 const homeRoutes = require("./routes/home");
 const adminRoutes = require("./routes/admin");
 const postsRoutes = require("./routes/admin/posts");
 const categoriesRoutes = require("./routes/admin/categories");
 // mongoose.Promise = global.Promise;
-
+const { mongoDbUrl } = require("./config/database");
 mongoose
-  .connect("mongodb://localhost:27017/cms", {
+  .connect(mongoDbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
@@ -39,6 +41,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 // helper function
 const { select, generateTime } = require("./helpers/handlebars-helpers");
+const { allowedNodeEnvironmentFlags } = require("process");
 
 // upload Middlware
 app.use(upload());
@@ -58,6 +61,8 @@ app.set("views", "views");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(passport.initialize());
+app.use(passport.session());
 
 //method Override for edit post
 app.use(methodOverride("_method"));
@@ -75,6 +80,8 @@ app.use(flash());
 //local variables using middleware
 app.use((req, res, next) => {
   res.locals.success_message = req.flash("success_message");
+  res.locals.error_message = req.flash("error_message");
+  res.locals.form_error = req.flash("form_errors");
   next();
 });
 app.use("/", homeRoutes);
