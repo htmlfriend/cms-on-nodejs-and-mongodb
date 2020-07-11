@@ -67,6 +67,7 @@ router.post("/create", (req, res) => {
       allowCommentsProp = false;
     }
     const newPost = new Post({
+      user: req.user.id,
       title: req.body.title,
       status: req.body.status,
       allowComments: allowCommentsProp,
@@ -107,6 +108,8 @@ router.put("/edit/:id", (req, res) => {
     } else {
       allowCommentsProp = false;
     }
+
+    post.user = req.user.id;
     post.title = req.body.title;
     post.allowComments = allowCommentsProp;
     post.status = req.body.status;
@@ -163,7 +166,12 @@ router.delete("/:id", (req, res) => {
     });
 });
 
+// to see all my posts in one place
 router.get("/my-posts", (req, res) => {
-  res.send(`<h1>This page is under constuction</h1>`);
+  Post.find({ user: req.user.id })
+    .populate("category")
+    .then((posts) => {
+      res.render("admin/posts/my-posts", { posts: posts });
+    });
 });
 module.exports = router;

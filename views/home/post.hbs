@@ -6,8 +6,8 @@
 
 		<!-- Author -->
 		<p class="lead">
-			status
-			<a href="#">{{post.status}}</a>
+			by
+			<a href="#">{{post.user.firstName}} {{post.user.lastName}}</a>
 		</p>
 
 		<hr>
@@ -30,10 +30,10 @@
 
 		<hr>
 
-		{{!-- 
+
 		{{#if user}}
 
-		{{#if post.allowComments}} --}}
+		{{#if post.allowComments}}
 
 		<!-- Comments Form -->
 		<div class="card my-4">
@@ -50,59 +50,43 @@
 			</div>
 		</div>
 
-		{{!-- {{else}} --}}
+		{{else}}
 
 		<h2>Comments not allowed for this</h2>
 
 		<br>
+		<p>This post has a private option</p>
 		<hr>
 
 
-		{{!-- {{/if}}
+		{{/if}}
 
 
-		{{else}} --}}
+		{{else}}
 
 		You need to login to comment <a href="/login">Login</a>
 
 		<br>
 		<hr>
-		{{!-- 
+
 		{{/if}}
 
 
 
-		{{#each post.comments}} --}}
+		{{#each post.comments}}
 
 		<!-- Single Comment -->
-		{{!-- <div class="media mb-4">
-			<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+		<div class="media mb-4">
+			<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="avatar">
 			<div class="media-body">
-				<h5 class="mt-0">{{user.firstName}}</h5>
+				<h5 class="mt-0">{{user.firstName}} {{user.lastName}}</h5>
 
 				{{body}}
 
 			</div>
-		</div> --}}
+		</div>
 
-		{{!-- {{/each}} --}}
-
-
-
-
-		<!-- Comment with nested comments -->
-
-
-		{{!-- <div class="media mt-4">
-			<img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-			<div class="media-body">
-				<h5 class="mt-0">Commenter Name</h5>
-				Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,
-				vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec
-				lacinia congue felis in faucibus
-			</div>
-		</div> --}}
-
+		{{/each}}
 
 	</div>
 

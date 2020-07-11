@@ -31,6 +31,8 @@ router.get("/", (req, res) => {
 router.get("/post/:id", (req, res) => {
   let postId = req.params.id;
   Post.findOne({ _id: postId })
+    .populate({ path: "comments", populate: { path: "user", model: "users" } })
+    .populate("user")
     .then((post) => {
       Category.find({}).then((categories) => {
         res.render("home/post", {
