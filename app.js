@@ -23,6 +23,7 @@ const homeRoutes = require("./routes/home");
 const adminRoutes = require("./routes/admin");
 const postsRoutes = require("./routes/admin/posts");
 const categoriesRoutes = require("./routes/admin/categories");
+const commentsRoutes = require("./routes/admin/comments");
 // mongoose.Promise = global.Promise;
 const { mongoDbUrl } = require("./config/database");
 mongoose
@@ -89,6 +90,7 @@ app.use("/", homeRoutes);
 app.use("/admin", adminRoutes);
 app.use("/admin/posts", postsRoutes);
 app.use("/admin/categories", categoriesRoutes);
+app.use("/admin/comments", commentsRoutes);
 
 app.listen(3000, () => {
   console.log("I am running on 3000 .....");

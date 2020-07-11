@@ -9,6 +9,7 @@ const bcrypt = require("bcryptjs");
 // passport register
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+
 router.all("*", (req, res, next) => {
   req.app.locals.layout = "home";
   next();

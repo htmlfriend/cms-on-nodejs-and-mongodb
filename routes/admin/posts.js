@@ -134,24 +134,33 @@ router.put("/edit/:id", (req, res) => {
   });
 });
 
+// when you delete post You will need to delete all the comments under this post
 router.delete("/:id", (req, res) => {
-  Post.findOne({ _id: req.params.id }).then((post) => {
-    if (post.file) {
-      fs.unlink(uploadDir + post.file, (err) => {
-        if (err) {
-          console.log(err);
-        }
-      });
-    }
-    post.remove().then((delededPost) => {
-      req.flash(
-        "success_message",
-        `Post ${delededPost.title} was successfully deleded`
-      );
+  Post.findOne({ _id: req.params.id })
+    .populate("comments")
+    .then((post) => {
+      if (post.file) {
+        fs.unlink(uploadDir + post.file, (err) => {
+          if (err) {
+            console.log(err);
+          }
+        });
+      }
+      if (!post.comments.length < 1) {
+        post.comments.forEach((comment) => {
+          comment.remove();
+          req.flash("success_message", "All the comments were removed. ");
+        });
+      }
+      post.remove().then((delededPost) => {
+        req.flash(
+          "success_message",
+          `Post ${delededPost.title} was successfully deleded`
+        );
 
-      res.redirect("/admin/posts");
+        res.redirect("/admin/posts");
+      });
     });
-  });
 });
 
 router.get("/my-posts", (req, res) => {
