@@ -27,10 +27,10 @@ router.get("/", (req, res) => {
     })
     .catch((err) => console.log(err));
 });
-
-router.get("/post/:id", (req, res) => {
-  let postId = req.params.id;
-  Post.findOne({ _id: postId })
+// starting using slug
+router.get("/post/:slug", (req, res) => {
+  let postId = req.params.slug;
+  Post.findOne({ slug: postId })
     .populate({
       path: "comments",
       populate: { path: "user", model: "users" },
