@@ -26,6 +26,9 @@
 	{{> sidebar}}
 </div>
 <ul class="pagination justify-content-center mb-4">
-	<li class="page-item"><a href="#" class="page-link">Older</a></li>
-	<li class="page-item"><a href="#" class="page-link">Newer</a></li>
+	{{#paginate current=current pages=pages}}
+
+	{{/paginate}}
+	{{!-- <li class="page-item"><a href="#" class="page-link">Older</a></li>
+	<li class="page-item"><a href="#" class="page-link">Newer</a></li> --}}
 </ul>

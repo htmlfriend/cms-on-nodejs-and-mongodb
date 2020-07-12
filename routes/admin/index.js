@@ -15,10 +15,10 @@ router.all("*", (req, res, next) => {
 
 router.get("/", (req, res) => {
   // data for chartjs in the first row
-  Post.countDocuments({}).then((postCount) => {
-    Comment.countDocuments({}).then((countComment) => {
-      Category.countDocuments({}).then((countCategory) => {
-        User.countDocuments({}).then((countUser) => {
+  Post.estimatedDocumentCount({}).then((postCount) => {
+    Comment.estimatedDocumentCount({}).then((countComment) => {
+      Category.estimatedDocumentCount({}).then((countCategory) => {
+        User.estimatedDocumentCount({}).then((countUser) => {
           res.render("admin/index", {
             postCount: postCount,
             countComment: countComment,

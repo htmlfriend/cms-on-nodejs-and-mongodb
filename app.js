@@ -42,7 +42,11 @@ mongoose
 app.use(express.static(path.join(__dirname, "public")));
 
 // helper function
-const { select, generateTime } = require("./helpers/handlebars-helpers");
+const {
+  select,
+  generateTime,
+  paginate,
+} = require("./helpers/handlebars-helpers");
 
 // upload Middlware
 app.use(upload());
@@ -52,7 +56,7 @@ app.engine(
   exphbrs({
     defaultLayout: "home",
     extname: "hbs",
-    helpers: { select: select, generateTime: generateTime },
+    helpers: { select: select, generateTime: generateTime, paginate: paginate },
     // helpers: require("./utils/hbs-helpers"),
     handlebars: allowInsecurePrototypeAccess(Handlebars),
   })
