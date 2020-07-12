@@ -132,7 +132,7 @@ router.put("/edit/:id", (req, res) => {
         "success_message",
         `Post ${editPost.title} was successfully updated`
       );
-      res.redirect("/admin/posts");
+      res.redirect("/admin/posts/my-posts");
     });
   });
 });
@@ -161,7 +161,7 @@ router.delete("/:id", (req, res) => {
           `Post ${delededPost.title} was successfully deleded`
         );
 
-        res.redirect("/admin/posts");
+        res.redirect("/admin/posts/my-posts");
       });
     });
 });

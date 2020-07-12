@@ -23,7 +23,11 @@
 			<td>{{status}}</td>
 			<td>{{category.name}}</td>
 			<td>{{allowComments}}</td>
-			<td><img class="img-thumbnail" src="/uploads/{{file}}" alt="image"></td>
+			{{#if file}}
+			<td><img class="img-thumbnail" width="200px" src="/uploads/{{file}}" alt="image"></td>
+			{{else}}
+			<td><img class="img-thumbnail" width="200px" alt="image" src="http://placehold.it/200x150"></td>
+			{{/if}}
 			<td><a href="/post/{{id}}">View</a></td>
 			<td><a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a></td>
 			<td>

@@ -5,6 +5,7 @@
 		<tr>
 			<th>id</th>
 			<th>owner</th>
+			<th>Status</th>
 			<th>Date</th>
 			<th>Delete Post</th>
 		</tr>
@@ -12,8 +13,11 @@
 	<tbody>
 		{{#each comments}}
 		<tr>
-			<th scope="row">{{_id}}</th>
+			<th scope="row">{{id}}</th>
 			<td>{{user.firstName}} {{user.lastName}}</td>
+			<td>
+				<input type="checkbox" name="approveComment" data-id="{{id}}" {{#if approveComment}} checked {{/if}}>
+			</td>
 			<td>{{generateTime date 'MMMM Do YYYY'}}</td>
 			<td>
 				<form action="/admin/comments/{{id}}?_method=DELETE" method="POST">

@@ -11,8 +11,8 @@
 			<th>Allow Comments</th>
 			<th>Image</th>
 			<th>Link to the posts</th>
-			<th>Edit Post</th>
-			<th>Delete Post</th>
+			{{!-- <th>Edit Post</th>
+			<th>Delete Post</th> --}}
 		</tr>
 	<tbody>
 		{{#each posts}}
@@ -23,14 +23,18 @@
 			<td>{{status}}</td>
 			<td>{{category.name}}</td>
 			<td>{{allowComments}}</td>
-			<td><img class="img-thumbnail" src="/uploads/{{file}}" alt="image"></td>
+			{{#if file}}
+			<td><img class="img-thumbnail" width="200px" src="/uploads/{{file}}" alt="image"></td>
+			{{else}}
+			<td><img class="img-thumbnail" width="200px" alt="image" src="http://placehold.it/200x150"></td>
+			{{/if}}
 			<td><a href="/post/{{id}}">View</a></td>
-			<td><a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a></td>
+			{{!-- <td><a href="/admin/posts/edit/{{id}}" class="btn btn-info">Edit</a></td>
 			<td>
 				<form action="/admin/posts/{{id}}?_method=DELETE" method="post">
 					<button type="submit" class="btn btn-danger">Delete</button>
 				</form>
-			</td>
+			</td> --}}
 		</tr>
 		{{/each}}
 	</tbody>

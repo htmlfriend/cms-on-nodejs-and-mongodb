@@ -30,6 +30,7 @@ mongoose
   .connect(mongoDbUrl, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
+    useFindAndModify: false,
   })
   .then((db) => {
     console.log("Connect to mongodb");
