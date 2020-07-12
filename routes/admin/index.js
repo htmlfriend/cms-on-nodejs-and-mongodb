@@ -2,8 +2,11 @@ const express = require("express");
 const router = express.Router();
 const faker = require("faker");
 const Post = require("../../models/Post");
+const Comment = require("../../models/Comment");
 
 const { userAuthenticated } = require("../../helpers/authentication");
+const Category = require("../../models/Category");
+const User = require("../../models/User");
 //for defeding router use middleware userAuthenticated
 router.all("*", (req, res, next) => {
   req.app.locals.layout = "admin";
@@ -11,7 +14,21 @@ router.all("*", (req, res, next) => {
 });
 
 router.get("/", (req, res) => {
-  res.render("admin/index");
+  // data for chartjs in the first row
+  Post.countDocuments({}).then((postCount) => {
+    Comment.countDocuments({}).then((countComment) => {
+      Category.countDocuments({}).then((countCategory) => {
+        User.countDocuments({}).then((countUser) => {
+          res.render("admin/index", {
+            postCount: postCount,
+            countComment: countComment,
+            countCategory: countCategory,
+            countUser: countUser,
+          });
+        });
+      });
+    });
+  });
 });
 
 router.post("/generate-fake-posts", (req, res) => {

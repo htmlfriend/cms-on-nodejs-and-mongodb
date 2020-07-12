@@ -46,16 +46,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 
 
-{{!-- 
+{{!-- // chartJs  --}}
 <script>
-	var ctx = document.getElementById("myChart").getContext('2d');
+	var ctx = document.getElementById('myChart').getContext('2d');
 	var myChart = new Chart(ctx, {
 		type: 'bar',
 		data: {
-			labels: ["Posts", "Categories", "Comments"],
+			labels: ['Posts', 'Comments', 'Categories', 'Views', 'Reading now', 'Users'],
 			datasets: [{
-				label: 'CMS DATA',
-				data: [{{postCount}}, {{categoryCount}}, {{commentCount}}],
+				label: '# of Votes',
+				data: [{{postCount}}, {{countComment}}, {{countCategory}}, 10, 2, {{countUser}}],
 	backgroundColor: [
 		'rgba(255, 99, 132, 0.2)',
 		'rgba(54, 162, 235, 0.2)',
@@ -65,7 +65,7 @@
 		'rgba(255, 159, 64, 0.2)'
 	],
 		borderColor: [
-			'rgba(255,99,132,1)',
+			'rgba(255, 99, 132, 1)',
 			'rgba(54, 162, 235, 1)',
 			'rgba(255, 206, 86, 1)',
 			'rgba(75, 192, 192, 1)',
@@ -73,8 +73,8 @@
 			'rgba(255, 159, 64, 1)'
 		],
 			borderWidth: 1
-            }]
-        },
+	}]
+	},
 	options: {
 		scales: {
 			yAxes: [{
@@ -84,53 +84,8 @@
 			}]
 		}
 	}
-    });
-</script>
-
-
-
-
-
-<script>
-
-	$("[name='approveComment']").bootstrapSwitch();
-
-
-	$(document).ready(() => {
-
-
-		$("[name='approveComment']").on('switchChange.bootstrapSwitch', function (e, data) {
-
-			const id = $(this).attr('data-id');
-
-			$.ajax({
-
-				type: "POST",
-				url: '/admin/comments/approve-comment',
-				data: {id: id, approveComment: data},
-				cache: false,
-				success: function (data) {
-
-					toastr.success(`Comment with id ${data._id} was updated`);
-
-				}
-
-
-			});
-
-
-
-
-
-		});
-
-
-
-
 	});
-
-</script> --}}
-
+</script>
 
 <script>
 	$("[name='approveComment']").bootstrapSwitch();
