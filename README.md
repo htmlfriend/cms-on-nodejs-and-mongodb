@@ -9,4 +9,6 @@
 
 ![GitHub Logo](/public/uploads/2020-07-07_17-08-06.png)
 
+![GitHub Logo](/public/uploads/1594599333284-2020-07-12_20-13-47.png)
 
+![GitHub Logo](/public/uploads/1594514396171-2020-07-11_20-37-37.png)
