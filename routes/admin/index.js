@@ -15,20 +15,23 @@ router.all("*", (req, res, next) => {
 
 router.get("/", (req, res) => {
   // data for chartjs in the first row
-  Post.estimatedDocumentCount({}).then((postCount) => {
-    Comment.estimatedDocumentCount({}).then((countComment) => {
-      Category.estimatedDocumentCount({}).then((countCategory) => {
-        User.estimatedDocumentCount({}).then((countUser) => {
-          res.render("admin/index", {
-            postCount: postCount,
-            countComment: countComment,
-            countCategory: countCategory,
-            countUser: countUser,
-          });
-        });
+  let promises = [
+    Post.estimatedDocumentCount().exec(),
+    Category.estimatedDocumentCount().exec(),
+    Comment.estimatedDocumentCount().exec(),
+    User.estimatedDocumentCount().exec(),
+  ];
+
+  Promise.all(promises).then(
+    ([postCount, countCategory, countComment, countUser]) => {
+      res.render("admin/index", {
+        postCount: postCount,
+        countComment: countComment,
+        countCategory: countCategory,
+        countUser: countUser,
       });
-    });
-  });
+    }
+  );
 });
 
 router.post("/generate-fake-posts", (req, res) => {
